@@ -1,64 +1,81 @@
 ---
 import InlineSvg from '../utils/InlineSvg.astro'
 import { Image } from 'astro:assets'
-import SWAGscore from './SWAGscore.astro'
-const { logo, name, slogan, menu } = Astro.props
+const { logo, name, slogan, menu, rs } = Astro.props
+console.log(rs)
 ---
 
-<footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 items-baseline justify-around">
-  <aside>
-    {
-      logo?.filename && logo.filename.endsWith('.svg') && (
-        <InlineSvg src={logo.filename} class="pure rounded-[var(--radius-box)]" innerclass="h-auto max-h-64 w-64" />
-      )
-    }
-    {
-      logo?.filename && !logo.filename.endsWith('.svg') && (
-        <Image
-          src={logo.filename}
-          alt={logo.alt}
-          class="pure rounded-[var(--radius-box)] h-auto max-h-64 w-64"
-          layout="constrained"
-          inferSize
-        />
-      )
-    }
-    <p>
-      {name}
-      <br />
-      {slogan}
-    </p>
-  </aside>
-  {
-    menu.map((cat) => {
-      if (cat.pages.length === 1) {
-        return (
-          <a class="link link-hover footer-title opacity-100" href={cat.pages[0].slug}>
-            {cat.pages[0].name}
-          </a>
-        )
-      } else {
-        return (
-          <nav>
-            <p class="footer-title opacity-100">{cat.name}</p>
-            {cat.pages.map((item) => (
-              <a class="link link-hover" href={item.slug}>
-                {item.name}
-              </a>
-            ))}
-          </nav>
+<footer class="bg-base-200 text-base-content p-10">
+  <div class="footer md:footer-horizontal items-baseline justify-around">
+    <aside>
+      {
+        logo?.filename && logo.filename.endsWith('.svg') && (
+          <InlineSvg
+            src={logo.filename}
+            class="pure rounded-[var(--radius-box)] max-h-32 w-32"
+            innerclass="h-auto max-h-64 w-64"
+          />
         )
       }
-    })
-  }
-
-  <div>
-    <aside>
-      <div
-        class="md:row-start-2 md:col-span-4 col-span-1 mt-2 body-sm flex flex-col gap-4 justify-self-center lg:justify-self-end">
-        <SWAGscore />
-      </div>
+      {
+        logo?.filename && !logo.filename.endsWith('.svg') && (
+          <Image
+            src={logo.filename}
+            alt={logo.alt}
+            class="pure rounded-[var(--radius-box)] h-auto max-h-64 w-64"
+            layout="constrained"
+            inferSize
+          />
+        )
+      }
+      <p>
+        {name}
+        <br />
+        {slogan}
+      </p>
     </aside>
+    {
+      menu.map((cat) => {
+        if (cat.pages.length === 1) {
+          return (
+            <a class="link link-hover footer-title opacity-100" href={cat.pages[0].slug}>
+              {cat.pages[0].name}
+            </a>
+          )
+        } else {
+          return (
+            <nav>
+              <p class="footer-title opacity-100">{cat.name}</p>
+              {cat.pages.map((item) => (
+                <a class="link link-hover" href={item.slug}>
+                  {item.name}
+                </a>
+              ))}
+            </nav>
+          )
+        }
+      })
+    }
+  </div>
+
+  <div class="border-t mt-8 flex justify-between pt-8">
+    <div class="rs self-baseline">
+      <div class="rs gap-5 flex">
+        {
+          rs?.map((reseau: any) => (
+            <a
+              href={reseau.url.url}
+              class={`icones-social-12 ${reseau.name}`}
+              rel="external noopener noreferrer"
+              title={`Voir notre page ${reseau.name}`}
+              target="_blank"
+              aria-label={`lien vers ${reseau.name}`}>
+              {reseau.icon.filename && <img src={reseau.icon.filename} class={`rs-icon w-12 h-auto`} />}
+            </a>
+          ))
+        }
+      </div>
+    </div>
     <aside>
       <div
         class="md:row-start-2 md:col-span-4 col-span-1 mt-2 body-sm flex flex-col gap-4 justify-self-center lg:justify-self-end">
