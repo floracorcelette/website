@@ -30,7 +30,7 @@ const storyblokStories = await Storyblok.get("cdn/stories", {
 const filteredUrls = [];
 storyblokStories.data.stories.map((story) => {
   if (story.content?.sitemap === false) {
-    filteredUrls.push(siteurl + "/" + story.full_slug + "/");
+    filteredUrls.push(siteurl + story.full_slug + "/");
   }
 });
 

@@ -11,8 +11,12 @@ const storyblokApi = useStoryblokApi()
 const { data } = await storyblokApi.get('cdn/stories/', {
   version: isPreview() ? 'draft' : 'published',
   starts_with: 'blog/',
-  is_startpage: false
+  is_startpage: false,
 })
+
+const stories = data.stories?.sort((a, b) => 
+  new Date(b.content?.creationDate).getTime() - new Date(a.content?.creationDate).getTime()
+)
 ---
 
 <section class="relative z-[1] container" {...storyblokEditable(blok)} data-aos="fade-up">
@@ -23,7 +27,7 @@ const { data } = await storyblokApi.get('cdn/stories/', {
     </div>
     <div class="relative flex flex-col gap-12 lg:col-span-2">
       {
-        data.stories?.map((article, index) => (
+        stories?.map((article, index) => (
           <article class="relative flex flex-col isolate gap-8 lg:flex-row group">
             <div class="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
               {article.content?.image && article.content?.image.filename && (
@@ -54,9 +58,9 @@ const { data } = await storyblokApi.get('cdn/stories/', {
                   {article.content?.author && <h3 class="text-base font-medium text-base-900">{article.content.author}</h3>}
                   <div>
                     {article.content.creationDate && (
-                      <span class="sr-only">{new Date(article.content.creationDate).toLocaleDateString()}</span>
+                      <span class="sr-only">{new Date(article.content.creationDate).toLocaleDateString("fr-FR")}</span>
                       <p class="text-sm font-bold uppercase text-accent">
-                        <time datetime={article.content.creationDate}>{new Date(article.content.creationDate).toLocaleDateString()}</time>
+                        <time datetime={article.content.creationDate}>{new Date(article.content.creationDate).toLocaleDateString("fr-FR")}</time>
                       </p>
                     )}
                   </div>
